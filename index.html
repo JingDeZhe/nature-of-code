@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nature of Code</title>
+    <style>
+      .gallary {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+      }
+      .gallary a {
+        padding: 1rem;
+        border-radius: 3px;
+        background-color: #e2e1e4;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transition: color 0.35s ease;
+      }
+      .gallary a::before,
+      .gallary a::after {
+        content: '';
+        height: 14px;
+        width: 14px;
+        position: absolute;
+        transition: all 0.35s ease;
+        opacity: 0;
+      }
+
+      .gallary a::before {
+        content: '';
+        right: 0;
+        top: 0;
+        border-top: 3px solid #f34718;
+        border-right: 3px solid #f34718;
+        transform: translate(-100%, 50%);
+      }
+
+      .gallary a:after {
+        content: '';
+        left: 0;
+        bottom: 0;
+        border-bottom: 3px solid #f34718;
+        border-left: 3px solid #f34718;
+        transform: translate(100%, -50%);
+      }
+
+      .gallary a:hover:before,
+      .gallary a:hover:after {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+
+      .gallary a:hover {
+        color: #f34718;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="gallary">
+      <a href="/pages/00_randomness/figure_i_11_tree_stochastic_noise/index.html">生成于柏林噪声的树</a>
+      <a href="/pages/03_oscillation/example_3_3_pointing_in_the_direction_of_motion/index.html">追随鼠标的小车</a>
+      <a href="/pages/03_oscillation/example_3_10_swinging_pendulum/index.html">单摆</a>
+    </div>
+  </body>
+</html>
