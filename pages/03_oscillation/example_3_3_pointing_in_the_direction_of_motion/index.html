@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/main.css" />
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
+    <script>
+      const s = 500
+
+      class Mover {
+        constructor() {
+          this.pos = createVector(s / 2, s / 2)
+          this.v = createVector(0, 0)
+          this.a = createVector(0, 0)
+          this.maxV = 4
+        }
+
+        update() {
+          const vm = createVector(mouseX, mouseY)
+          const dir = p5.Vector.sub(vm, this.pos)
+          dir.normalize()
+          dir.mult(0.5)
+          this.a = dir
+
+          this.v.add(this.a)
+          this.v.limit(this.maxV)
+          this.pos.add(this.v)
+        }
+
+        display() {
+          push()
+          stroke(30)
+          strokeWeight(2)
+          rectMode(CENTER)
+          translate(this.pos.x, this.pos.y)
+          rotate(this.v.heading())
+          rect(0, 0, 30, 10)
+          pop()
+        }
+
+        checkEdge() {
+          if (this.pos.x > s) this.pos.x = 0
+          if (this.pos.x < 0) this.pos.x = s
+          if (this.pos.y > s) this.pos.y = 0
+          if (this.pos.y < 0) this.pos.y = s
+        }
+      }
+
+      let mover
+      function setup() {
+        createCanvas(s, s)
+        mover = new Mover()
+      }
+
+      function draw() {
+        background(240)
+        mover.update()
+        mover.checkEdge()
+        mover.display()
+      }
+    </script>
+  </body>
+</html>

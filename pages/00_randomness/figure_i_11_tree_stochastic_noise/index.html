@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/main.css" />
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
+    <script>
+      const s = 500
+      function setup() {
+        createCanvas(s, s)
+      }
+
+      let yoff = 0
+      let seed = 5
+      function draw() {
+        yoff += 0.005
+        randomSeed(seed)
+        background(250)
+        stroke(30)
+        translate(s / 2, s)
+        branch(60, 0)
+      }
+
+      function mousePressed() {
+        yoff = random(1000)
+        seed = millis()
+      }
+
+      function branch(h, xoff) {
+        strokeWeight(map(h, 0, 100, 1, 5))
+        stroke(map(h, 0, 100, 90, 30))
+        line(0, 0, 0, -h)
+        translate(0, -h)
+        h *= 0.7
+        xoff += 0.1
+
+        if (h > 4) {
+          const n = floor(random(1, 5))
+          for (let i = 0; i < n; i++) {
+            let theta = map(noise(xoff + i, yoff), 0, 1, -PI / 2, PI / 2)
+            if (n % 2 === 0) {
+              theta *= -1
+            }
+
+            push()
+            rotate(theta)
+            branch(h, xoff)
+            pop()
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

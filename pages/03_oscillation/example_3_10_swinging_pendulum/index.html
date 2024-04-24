@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/main.css" />
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
+    <script>
+      const s = 500
+      const g = 1
+
+      class Pendulum {
+        constructor(x, y, r) {
+          this.pivot = createVector(x, y)
+          this.r = r
+          this.bob = createVector(0, 0)
+          this.angle = PI / 4
+          this.angleVelocity = 0
+          this.angleAcceleration = 0
+
+          this.damping = 0.995
+          this.baller = 30
+
+          this.dragging = false
+        }
+
+        update() {
+          if (!this.dragging) {
+            this.angleAcceleration = (-g * sin(this.angle)) / this.r
+            this.angleVelocity += this.angleAcceleration
+            this.angle += this.angleVelocity
+            this.angleVelocity *= this.damping
+          }
+        }
+
+        drag() {
+          if (this.dragging) {
+            const diff = p5.Vector.sub(this.pivot, createVector(mouseX, mouseY))
+            this.angle = atan2(-1 * diff.y, diff.x) - PI / 2
+          }
+        }
+
+        clicked(mx, my) {
+          if (dist(mx, my, this.bob.x, this.bob.y) < this.baller) {
+            this.dragging = true
+          }
+        }
+
+        stopDragging() {
+          this.dragging = false
+        }
+
+        display() {
+          this.bob.set(this.r * sin(this.angle), this.r * cos(this.angle))
+          this.bob.add(this.pivot)
+
+          push()
+          stroke(30)
+          strokeWeight(2)
+          line(this.pivot.x, this.pivot.y, this.bob.x, this.bob.y)
+          fill(30)
+          circle(this.bob.x, this.bob.y, this.baller)
+          pop()
+        }
+      }
+
+      let pendulum
+      function setup() {
+        createCanvas(s, s)
+        pendulum = new Pendulum(s / 2, 0, s / 3)
+        window.z = pendulum
+      }
+
+      function draw() {
+        background(240)
+        pendulum.update()
+        pendulum.display()
+        pendulum.drag()
+      }
+
+      function mousePressed() {
+        pendulum.clicked(mouseX, mouseY)
+      }
+
+      function mouseReleased() {
+        pendulum.stopDragging()
+      }
+    </script>
+  </body>
+</html>
